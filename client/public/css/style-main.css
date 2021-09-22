@@ -63,3 +63,7 @@ html{
 .cn-create .cp{
     cursor: pointer;
 }
+
+.cn-create .el-button{
+    margin: 9px;
+}

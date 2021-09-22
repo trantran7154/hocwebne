@@ -1,0 +1,45 @@
+<el-form :label-position="labelPosition" ref="productAPIForm" :rules="productAPIValidate" :model="productAPIForm" label-width="120px">
+    <div class="row">
+        <div class="col-lg-4">
+            {{> instruct/product/create-api}}
+        </div>
+        <div class="col-lg-8">
+            <el-form-item label="Đường dẫn">
+                <el-input v-model="productAPIForm.link" placeholder="Vui lòng nhập link"></el-input>
+            </el-form-item>
+            <el-form-item label="Tài khoản">
+                <el-input v-model="productAPIForm.user" placeholder="Vui lòng nhập tài khoản"></el-input>
+            </el-form-item>
+            <el-form-item label="Mật khẩu">
+                <el-input v-model="productAPIForm.password" placeholder="Vui lòng nhập mật khẩu" show-password></el-input>
+            </el-form-item>
+            <el-form-item label="Key API">
+                <el-input v-model="productAPIForm.key" placeholder="Vui lòng nhập key" show-password></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="createProductAPI('productAPIForm')">Thêm sản phẩm</el-button>
+                <el-button>Reset</el-button>
+            </el-form-item>
+            <el-card v-if="isProgressCreateAPI">
+                <el-progress :text-inside="true" :stroke-width="26" :percentage="progress"></el-progress>
+                 <el-table :data="listData.indexProductAPI"
+                           stripe
+                           style="width: 100%"
+                           v-loading="loadingTable">
+                    <el-table-column prop="userId"
+                                     label="userId">
+                    </el-table-column>
+                    <el-table-column prop="id"
+                                     label="id">
+                    </el-table-column>
+                    <el-table-column prop="title"
+                                     label="title">
+                    </el-table-column>
+                     <el-table-column prop="body"
+                                     label="body">
+                    </el-table-column>
+                </el-table>
+            </el-card>
+        </div>
+    </div>
+</el-form>

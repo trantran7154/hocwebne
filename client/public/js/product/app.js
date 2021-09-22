@@ -90,6 +90,14 @@ var Main = {
                         label: 'Phần cứng',
                         value: '3'
                     }
+                ],
+                indexProductAPI: [
+                    {
+                        "userId": 1,
+                        "id": 1,
+                        "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+                        "body": "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
+                    }
                 ]
             },
             fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],
@@ -103,6 +111,15 @@ var Main = {
                 describe:'',
                 content:'',
                 active: true
+            },
+            productAPIForm: {
+                link: '',
+                user: '',
+                password: '',
+                key: ''
+            },
+            productAPIValidate: {
+
             },
             productValidation: {
                 name: [
@@ -144,7 +161,14 @@ var Main = {
             search: '',
             valueAction: '',
             dialogFormCreateVisible: false,
-            labelPosition:'top'
+            labelPosition:'top',
+            isCreate: false,
+            isCreateAPI: false,
+            loadingForm: false,
+            loadingTable: false,
+            activeInstructCreateAPI: ['1','2','3'],
+            progress: 0,
+            isProgressCreateAPI: false
         }
     },
     mounted() {
@@ -166,8 +190,96 @@ var Main = {
             }
         },
         clickCreateProduct(){
-            this.dialogFormCreateVisible = true,
-            this.title = "Thêm sản phẩm"
+            let that = this;
+            that.dialogFormCreateVisible = true;
+            that.title = "Thêm sản phẩm mới";
+            that.isCreate = true;
+
+            this.setTimeout1sLoading();
+        },
+        clickCreateAPIProduct(){
+            let that = this;
+            this.clearForm();
+            that.title = "Thêm sản phẩm bằng API";
+            that.isCreateAPI = true;
+
+            this.setTimeout1sLoading();
+
+            that.colorCreateAPI = '#909399';
+            that.textCreateAPI = '#FFF';
+        },
+        clickCreateProductSub(){
+            let that = this;
+            this.clearForm();
+            that.isCreate = true;
+            that.title = "Thêm sản phẩm mới"
+            
+            this.setTimeout1sLoading();
+
+            that.colorCreate = '#909399';
+            that.textCreate = '#FFF';
+        },
+        createProduct(productForm){
+            let that = this;
+            that.$refs[productForm].validate((valid) => {
+                if (valid) {
+                  console.log(this.productForm);
+                } else {
+                  console.log('error submit!!');
+                  return false;
+                }
+            });
+        },
+        createProductAPI(productAPIForm){
+            let that = this;
+            that.isProgressCreateAPI = true;
+            that.loadingTable = true;
+            that.$refs[productAPIForm].validate((valid) => {
+                if (valid) {
+                    console.log(this.productAPIForm);
+
+                    $.ajax({
+                        url: this.productAPIForm.link,
+                        type: "GET",
+                        dataType: 'json',
+                        async: true,
+                        contentType: 'application/json; charset=UTF-8',
+                        success: function (rs) {
+                            var data = JSON.parse(JSON.stringify(rs));
+                            
+                            console.log(data);
+
+                            for(var i = 1; i <= data.length; i++){
+                                that.progress = i;
+                            }
+                            data.forEach((item, index) => {
+                                that.listData.indexProductAPI.push(item);
+                            })
+                            that.loadingTable = false;
+                        },
+                        error: function (xhr, status, err) { }
+                    });
+                } else {
+                console.log('error submit!!');
+                return false;
+                }
+            });
+        },
+        clearForm(){
+            let that = this;
+            that.isCreate = false;
+            that.isCreateAPI = false;
+            that.colorCreate = '';
+            that.textCreate = '';
+            that.colorCreateAPI = '';
+            that.textCreateAPI = '';
+        },
+        setTimeout1sLoading(){
+            let that = this;
+            that.loadingForm = true;
+            setTimeout(function(){ 
+                that.loadingForm = false;
+            }, 3000);
         }
     }
 };
