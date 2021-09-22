@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-lg-3">
                 <el-form-item label="Ảnh minh họa">
-                    <el-input v-on:change="uploadImages" type="file" v-model="productForm.name"></el-input>
+                    <el-input v-on:change="uploadImages" type="file" v-model="productForm.image"></el-input>
                 </el-form-item>
                 <center><img id="myImage" src="/images/no-image-1.jpg" alt="" class="upload-image cp"></center>
                 <el-form-item label="Slider ảnh">
@@ -58,11 +58,8 @@
                 <el-form-item label="Nội dung" prop="content">
                     <el-input type="textarea" v-model="productForm.content" placeholder="Vui lòng nhập nội dung sản phẩm"></el-input>
                 </el-form-item>
-                <el-form-item label="Lượt xem" prop="view">
-                    <el-input-number v-model="productForm.view" 
-                                     :min="1"
-                                     maxlength="500"
-                                     show-word-limit>
+                <el-form-item label="Lượt xem">
+                    <el-input-number v-model="productForm.view" :min="1">
                     </el-input-number>
                 </el-form-item>
                 <el-form-item label="Tình trạng">

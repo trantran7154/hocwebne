@@ -137,14 +137,7 @@ var Main = {
                         message: 'Vượt quá số lần cho phép', 
                         trigger: 'change' 
                     }
-                ],
-                view: [
-                    {
-                        max: 50,
-                        message: 'Vượt quá số lần cho phép', 
-                        trigger: 'change' 
-                    }
-                ],
+                ]
             },
             multipleSelection: [],
             activeMain: 'index',
