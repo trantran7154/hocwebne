@@ -3,7 +3,11 @@
         <el-button type="info" round plain size="small" class="float-right">
             <i class="fa fa-question" aria-hidden="true"></i> Hướng dẫn
         </el-button>
-        <el-button type="info" round plain size="small" class="float-right">
+        <el-button @click="clickCreateSettingProduct" 
+                   type="info" round plain 
+                   size="small" 
+                   class="float-right"
+                   :style="'color: ' + textCreateSetting + '; background-color: ' + colorCreateSetting + ';'">
             <i class="fa fa-cog" aria-hidden="true"></i> Cài đặt
         </el-button>
         <el-button type="info" round plain size="small" class="float-right">
@@ -29,5 +33,8 @@
     </div>
     <div v-if="isCreateAPI == true" v-loading="loadingForm">
         {{> product/form-createAPI}}
+    </div>
+    <div v-if="isSettingCreate == true" v-loading="loadingForm">
+        {{> product/form-create-setting}}
     </div>
 </el-dialog>

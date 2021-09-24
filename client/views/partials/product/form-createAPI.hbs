@@ -38,6 +38,21 @@
                      <el-table-column prop="body"
                                      label="body">
                     </el-table-column>
+                    <el-table-column fixed="right"
+                                     label="Operations">
+                        <template slot-scope="scope">
+                            <el-button @click.native.prevent="deleteRowCreateAPI(scope.$index, listData.indexProductAPI)"
+                                       type="text"
+                                       size="small">
+                            <i class="fa fa-eye" aria-hidden="true"></i> |
+                            </el-button>
+                            <el-button @click.native.prevent="deleteRowCreateAPI(scope.$index, listData.indexProductAPI)"
+                                       type="text"
+                                       size="small">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                            </el-button>
+                        </template>
+                    </el-table-column>
                 </el-table>
             </el-card>
         </div>
