@@ -7,7 +7,7 @@ var Main = {
                     code: 'BP-1',
                     name: 'Bàn phím đẹp và chất lượng',
                     image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZiaXVSwY4TApXOC6LgwaIDdKJQ4MC0xr3GA&usqp=CAU',
-                    category: 'Dụng cụ máy tính',
+                    category: ['Dụng cụ máy tính'],
                     price: '400.000 VNĐ',
                     view: '20',
                     describe: 'Bàn phím có kích thước mỏng, kiểu dáng bắt mắt không chỉ giúp tiết kiệm được diện tích mà còn tạo tính thẩm mỹ cho không gian làm việc. Ngoài ra, bạn còn có thể điều chỉnh chiều cao bằng cách gấp lại hoặc mở rộng đôi chân vững chắc để tăng độ nghiên của bàn phím thêm 8 độ.',
@@ -25,7 +25,7 @@ var Main = {
                     code: 'BP-2',
                     name: 'Bàn phím đẹp và chất lượng',
                     image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZiaXVSwY4TApXOC6LgwaIDdKJQ4MC0xr3GA&usqp=CAU',
-                    category: 'Dụng cụ máy tính',
+                    category: ['Dụng cụ máy tính'],
                     price: '400.000 VNĐ',
                     view: '20',
                     describe: 'Bàn phím có kích thước mỏng, kiểu dáng bắt mắt không chỉ giúp tiết kiệm được diện tích mà còn tạo tính thẩm mỹ cho không gian làm việc. Ngoài ra, bạn còn có thể điều chỉnh chiều cao bằng cách gấp lại hoặc mở rộng đôi chân vững chắc để tăng độ nghiên của bàn phím thêm 8 độ.',
@@ -136,6 +136,54 @@ var Main = {
                         value: '6',
                         label: 'Cài đặt mật khẩu'
                     },
+                ],
+                timelineHistory: [
+                    {
+                        content: 'tran đã thay đổi sản phẩm vào',
+                        timestamp: '26/09/2021'
+                    },
+                    {
+                        content: 'tran đã thay đổi sản phẩm vào',
+                        timestamp: '26/09/2021'
+                    },
+                    {
+                        content: 'tran đã thay đổi sản phẩm vào',
+                        timestamp: '26/09/2021'
+                    }
+                ],
+                tableHistory: [
+                    {
+                        content: 'tran đã thay đổi sản phẩm vào',
+                        datecreate: '26/09/2021',
+                        ip: '172.172.168',
+                        usercreate: 'tran'
+                    },
+                    {
+                        content: 'tran đã thay đổi sản phẩm vào',
+                        datecreate: '26/09/2021',
+                        ip: '172.172.168',
+                        usercreate: 'tran'
+                    },
+                    {
+                        content: 'tran đã thay đổi sản phẩm vào',
+                        datecreate: '26/09/2021',
+                        ip: '172.172.168',
+                        usercreate: 'tran'
+                    }
+                ],
+                tabsHistory: [
+                    {
+                        label: 'Tổng lịch sử',
+                        name: 'all'
+                    },
+                    {
+                        label: 'Lịch sử truy cập',
+                        name: 'access'
+                    },
+                    {
+                        label: 'Lịch sử thay đổi',
+                        name: 'change'
+                    }
                 ]
             },
             fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],
@@ -215,6 +263,8 @@ var Main = {
             search: '',
             valueAction: '',
             dialogFormCreateVisible: false,
+            dialogFormEditVisible: false,
+            dialogFormDetailsVisible: false,
             labelPosition:'top',
             tabPosition: 'left',
             isCreate: false,
@@ -222,10 +272,14 @@ var Main = {
             loadingForm: false,
             loadingTable: false,
             activeInstructCreateAPI: ['1','2','3'],
+            activeDetailsProduct: 'body',
+            activeHistory: 'all',
             progress: 0,
             isProgressCreateAPI: false,
             isSettingCreate: false,
             bg: '#FFF',
+            reverseHistory: true,
+            radioHistory: 'Tổng lịch sử'
         }
     },
     mounted() {
@@ -253,6 +307,48 @@ var Main = {
             that.isCreate = true;
 
             this.setTimeout1sLoading();
+        },
+        clickEditProduct(row){
+            let that = this;
+            this.clearForm();
+            this.productForm = JSON.parse(JSON.stringify(row));
+            that.dialogFormEditVisible = true;
+            that.title = "Sửa sản phẩm - " + row.name;
+        },
+        clickDetailsProduct(row){
+            let that = this;
+            this.clearForm();
+            that.dialogFormDetailsVisible = true;
+            that.title = "Xem chi tiết sản phẩm - " + row.name;
+            
+            that.code = row.code;
+            that.name = row.name;
+            that.image = row.image;
+            that.category = row.category;
+            that.price = row.price;
+            that.view = row.view;
+            that.describe = row.describe;
+            that.content = row.content;
+            that.datecreate = row.datecreate;
+            that.datemodified = row.datemodified;
+            that.usercreate = row.usercreate; 
+            that.usermodified = row.usermodified;
+            that.active = row.active;
+            that.bin = row.bin;
+            that.follow = row.follow;
+            that.note = row.note;
+
+            that.activeColor = row.active ? 'success' : 'default';
+            that.activeText = row.active ? 'Hoạt động' : 'Không hoạt động';
+
+            that.followColor = row.follow ? 'success' : 'default';
+            that.followText = row.follow ? 'Đang theo dõi' : 'Chưa theo dõi';
+
+            that.noteColor = row.follow ? 'success' : 'default';
+            that.noteText = row.follow ? 'Đang chú ý' : 'Chưa chú ý';
+
+            that.binColor = row.bin ? 'success' : 'default';
+            that.binText = row.bin ? 'Yes' : 'No';
         },
         clickCreateAPIProduct(){
             let that = this;
@@ -334,6 +430,36 @@ var Main = {
                   return false;
                 }
             });
+        },
+        handleClickDetails(){   
+            let that = this;
+            if(that.activeDetailsProduct == 'history')
+            {
+                that.titleHis = 'Tổng lịch sử';
+            }
+            else
+            {
+                console.log("error");
+            }
+        },
+        handleClickHistorySub(){
+            let that = this;
+            if(that.activeHistory == 'all')
+            {
+                that.titleHis = 'Tổng lịch sử';
+            }
+            else if(that.activeHistory == 'access')
+            {
+                that.titleHis = 'Lịch sử truy cập';
+            }
+            else if(that.activeHistory == 'change')
+            {
+                that.titleHis = 'Lịch sử thay đổi';
+            }
+            else
+            {
+                console.log("error");
+            }
         },
         deleteRowCreateAPI(index, rows){
             rows.splice(index, 1);

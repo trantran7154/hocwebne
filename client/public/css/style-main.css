@@ -67,3 +67,30 @@ html{
 .cn-create .el-button{
     margin: 9px;
 }
+
+.cn-edit .el-dialog{
+    width: 70%;
+}
+
+.cn-edit .upload-image{
+    width: 200px;
+    height: 200px;
+}
+
+.cn-edit .el-button{
+    margin: 9px;
+}
+
+.cn-details .el-dialog{
+    width: 70%;
+}
+
+.cn-details .img{
+    width: 200px;
+    height: 200px;
+}
+
+.mt-2{
+    margin-top: 2%;
+}
+

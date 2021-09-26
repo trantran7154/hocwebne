@@ -19,7 +19,7 @@
                                     {{> product/filter}}
                                     <el-table class="cn-table"
                                               ref="multipleTable"
-                                              :data="tableData"
+                                              :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
                                               style="width: 100%"
                                               @selection-change="handleSelectionChange">
                                         <el-table-column type="selection" 
@@ -64,8 +64,8 @@
                                         </el-table-column>
                                         <el-table-column label="Tình trạng">
                                             <template slot-scope="scope">
-                                                <i class="fa fa-eye cp-icon" aria-hidden="true"></i> | 
-                                                <i class="fas fa-edit cp-icon"></i> |
+                                                <span @click="clickDetailsProduct(scope.row)"><i class="fa fa-eye cp-icon" aria-hidden="true"></i> |</span> 
+                                                <span @click="clickEditProduct(scope.row)"><i class="fas fa-edit cp-icon"></i> |</span>
                                                 <i class="fa fa-bell cp-icon" aria-hidden="true"></i> |
                                                 <i class="fa fa-comment cp-icon" aria-hidden="true"></i> |
                                                 <i class="fa fa-trash cp-icon" aria-hidden="true"></i>
@@ -81,6 +81,8 @@
         </div>
     </div>
     {{> product/dialog-create}}
+    {{> product/dialog-edit}}
+    {{> product/dialog-details}}
 </div>
 
 <script src="/js/product/app.js"></script>

@@ -1,0 +1,101 @@
+<el-dialog :title="title" :visible.sync="dialogFormDetailsVisible" class="cn-details">
+    <el-tabs v-model="activeDetailsProduct" @tab-click="handleClickDetails">
+        <el-tab-pane label="Thông tin chi tiết" name="body">
+            <div class="row">
+                <div class="col-lg-3">
+                    <img :src="image" alt="" class="img">
+                    <hr>
+                    <h6>Thống kê</h6>
+                    <div class="label-main">
+                        <label class="label label-inverse-default">Có <span v-text="view" class="text-danger"></span> lượt xem</label>
+                    </div>
+                    <div class="label-main">
+                        <label class="label label-inverse-default">Có <span v-text="view" class="text-danger"></span> lượt theo dõi</label>
+                    </div>
+                    <div class="label-main">
+                        <label class="label label-inverse-default">Có <span v-text="view" class="text-danger"></span> lượt chú ý</label>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <h4 v-text="name"></h4>
+                    <hr>
+                    <b>Danh mục: </b><span v-text="category"></span>
+                    <hr>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            Ngày tạo: <label class="badge badge-inverse-default" v-text="datecreate"></label>
+                        </div>
+                        <div class="col-lg-6">
+                            Ngày sửa: <label class="badge badge-inverse-default" v-text="datemodified"></label>
+                        </div>
+                        <div class="col-lg-6">
+                            Người tạo: <label class="badge badge-inverse-default" v-text="usercreate"></label>
+                        </div>
+                        <div class="col-lg-6">
+                            Người sửa: <label class="badge badge-inverse-default" v-text="usermodified"></label>
+                        </div>
+                        <div class="col-lg-6">
+                            Hoạt động: <label :class="'badge badge-inverse-' + activeColor" v-text="activeText"></label>
+                        </div>
+                        <div class="col-lg-6">
+                            Theo dõi: <label :class="'badge badge-inverse-' + followColor" v-text="followText"></label>
+                        </div>
+                        <div class="col-lg-6">
+                            Chú ý: <label :class="'badge badge-inverse-' + noteColor" v-text="noteText"></label>
+                        </div>
+                        <div class="col-lg-6">
+                            Thùng rác: <label :class="'badge badge-inverse-' + binColor" v-text="binText"></label>
+                        </div>
+                    </div>
+                    <hr>
+                    <h6>Mô tả</h6>
+                    <i v-text="describe"></i>
+                    <h6 class="mt-2">Nội dung</h6>
+                    <p v-text="content"></p>
+                </div>
+                <div class="col-lg-3">
+                    <h6>Lịch sử truy cập - thay đổi</h6>
+                    <el-timeline :reverse="reverseHistory">
+                        <el-timeline-item
+                        v-for="(item, index) in listData.timelineHistory"
+                        :key="index"
+                        :timestamp="item.timestamp">
+                        <span v-text="item.content"></span>
+                        </el-timeline-item>
+                    </el-timeline>
+                </div>
+            </div>
+        </el-tab-pane>
+        <el-tab-pane label="Hình ảnh" name="images">Hình ảnh</el-tab-pane>
+        <el-tab-pane label="Lịch sử" name="history">
+            <el-tabs :tab-position="tabPosition" v-model="activeHistory" @tab-click="handleClickHistorySub">
+                <el-tab-pane v-for="item in listData.tabsHistory" :label="item.label" :name="item.name">
+                    <label class="badge badge-default" v-text="titleHis"></label>
+                    <el-table :data="listData.tableHistory"
+                              stripe
+                              style="width: 100%">
+                        <el-table-column prop="date"
+                                         label="STT"
+                                         type="index"
+                                         width="50">
+                        </el-table-column>
+                        <el-table-column prop="usercreate"
+                                         label="Người thực hiện">
+                        </el-table-column>
+                        <el-table-column prop="usercreate"
+                                         label="Người thực hiện">
+                        </el-table-column>
+                        <el-table-column prop="content"
+                                         label="Công việc">
+                        </el-table-column>
+                        <el-table-column prop="ip"
+                                         label="Địa chỉ">
+                        </el-table-column>
+                    </el-table>
+                </el-tab-pane>
+            </el-tabs>
+        </el-tab-pane>
+        <el-tab-pane label="Thống kê" name="statistic">Thống kê</el-tab-pane>
+        <el-tab-pane label="Cài đặt" name="setting">Cài đặt</el-tab-pane>
+    </el-tabs>
+</el-dialog>
