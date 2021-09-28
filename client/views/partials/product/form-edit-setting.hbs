@@ -1,0 +1,34 @@
+<el-form :label-position="labelPosition" :style="'background-color:' + bg + ';'" :model="settingEditForm"
+    :rules="settingValidate" ref="settingEditForm" label-width="120px" class="demo-ruleForm">
+    <div class="row">
+        <div class="col-lg-6">
+            <el-tabs :tab-position="tabPosition">
+                <el-tab-pane label="Giao diện">
+                    <el-form-item label="Giao diện">
+                        <el-switch v-model="settingEditForm.bgcolor" active-text="Tối" inactive-text="Sáng"
+                            @change="changeEditBG('settingEditForm')">
+                        </el-switch>
+                    </el-form-item>
+                    <el-form-item label="Giao diện tùy chỉnh">
+                        <el-checkbox-group v-model="settingEditForm.bgcolorMain">
+                            <el-checkbox label="Đen"></el-checkbox>
+                            <el-checkbox label="Vàng"></el-checkbox>
+                            <el-checkbox label="Tím"></el-checkbox>
+                        </el-checkbox-group>
+                    </el-form-item>
+                    <el-form-item label="Kiểu chữ">
+                        <el-select v-model="settingEditForm.fonts" filterable placeholder="Chọn kiểu chữ">
+                            <el-option v-for="item in listData.optionsFonts" :key="item.value" :label="item.label"
+                                :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-button type="primary">Cập nhật</el-button>
+                </el-tab-pane>
+            </el-tabs>
+        </div>
+        <div class="col-lg-3">
+
+        </div>
+    </div>
+</el-form>

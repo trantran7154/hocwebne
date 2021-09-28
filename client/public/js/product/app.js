@@ -12,10 +12,10 @@ var Main = {
                     view: '20',
                     describe: 'Bàn phím có kích thước mỏng, kiểu dáng bắt mắt không chỉ giúp tiết kiệm được diện tích mà còn tạo tính thẩm mỹ cho không gian làm việc. Ngoài ra, bạn còn có thể điều chỉnh chiều cao bằng cách gấp lại hoặc mở rộng đôi chân vững chắc để tăng độ nghiên của bàn phím thêm 8 độ.',
                     content: 'Bàn tay của bạn sẽ tận hưởng những phím bấm thấp, yên tĩnh và bố trí phím tiêu chuẩn với đầy đủ kích thước F-phím và phím số. Với bàn phím Logitech K120 USB, bạn chỉ cần cắm nó vào cổng USB trên máy tính để bàn, máy tính xách tay hoặc máy tính netbook và bắt đầu sử dụng nó ngay lập tức.',
-                    datecreate: '2016-05-01',
-                    datemodified: '2016-05-01',
-                    usercreate: 'trân',
-                    usermodified: 'trân',
+                    dateCreate: '2016-05-01',
+                    dateModified: '2016-05-01',
+                    userCreate: 'trân',
+                    userModified: 'trân',
                     active: true,
                     bin: false,
                     follow: false,
@@ -30,13 +30,13 @@ var Main = {
                     view: '20',
                     describe: 'Bàn phím có kích thước mỏng, kiểu dáng bắt mắt không chỉ giúp tiết kiệm được diện tích mà còn tạo tính thẩm mỹ cho không gian làm việc. Ngoài ra, bạn còn có thể điều chỉnh chiều cao bằng cách gấp lại hoặc mở rộng đôi chân vững chắc để tăng độ nghiên của bàn phím thêm 8 độ.',
                     content: 'Bàn tay của bạn sẽ tận hưởng những phím bấm thấp, yên tĩnh và bố trí phím tiêu chuẩn với đầy đủ kích thước F-phím và phím số. Với bàn phím Logitech K120 USB, bạn chỉ cần cắm nó vào cổng USB trên máy tính để bàn, máy tính xách tay hoặc máy tính netbook và bắt đầu sử dụng nó ngay lập tức.',
-                    datecreate: '2016-05-01',
-                    datemodified: '2016-05-01',
-                    usercreate: 'trân',
-                    usermodified: 'trân',
+                    dateCreate: '2016-05-01',
+                    dateModified: '2016-05-01',
+                    userCreate: 'trân',
+                    userModified: 'trân',
                     active: false,
-                    bin: false,
-                    follow: false,
+                    bin: true,
+                    follow: true,
                     note: false,
                 }
             ],
@@ -154,21 +154,21 @@ var Main = {
                 tableHistory: [
                     {
                         content: 'tran đã thay đổi sản phẩm vào',
-                        datecreate: '26/09/2021',
+                        dateCreate: '26/09/2021',
                         ip: '172.172.168',
-                        usercreate: 'tran'
+                        userCreate: 'tran'
                     },
                     {
                         content: 'tran đã thay đổi sản phẩm vào',
-                        datecreate: '26/09/2021',
+                        dateCreate: '26/09/2021',
                         ip: '172.172.168',
-                        usercreate: 'tran'
+                        userCreate: 'tran'
                     },
                     {
                         content: 'tran đã thay đổi sản phẩm vào',
-                        datecreate: '26/09/2021',
+                        dateCreate: '26/09/2021',
                         ip: '172.172.168',
-                        usercreate: 'tran'
+                        userCreate: 'tran'
                     }
                 ],
                 tabsHistory: [
@@ -183,6 +183,17 @@ var Main = {
                     {
                         label: 'Lịch sử thay đổi',
                         name: 'change'
+                    }
+                ],
+                radioStatusNote: [
+                    {
+                        label: 'Rất quan trọng'
+                    },
+                    {
+                        label: 'Quan trọng'
+                    },
+                    {
+                        label: 'Bình thường'
                     }
                 ]
             },
@@ -209,6 +220,11 @@ var Main = {
                 bgcolorMain: '',
                 fonts: ''
             },
+            settingEditForm:{
+                bgcolor: false,
+                bgcolorMain: '',
+                fonts: ''
+            },
             createPasswordForm:{
                 btn: [],
                 useraccess: [],
@@ -217,10 +233,21 @@ var Main = {
                 repassword: ''
 
             },
+            noteForm: [
+                {
+                    content: '',
+                    status: 'Bình thường',
+                    title: '',
+                    date: [new Date(2016, 9, 10, 8, 40), new Date(2016, 9, 10, 9, 40)]
+                }
+            ],
             productAPIValidate: {
 
             },
             createPasswordValidate:{
+
+            },
+            noteValidate:{
 
             },
             productValidation: {
@@ -265,18 +292,21 @@ var Main = {
             dialogFormCreateVisible: false,
             dialogFormEditVisible: false,
             dialogFormDetailsVisible: false,
+            dialogFormNoteVisible: false,
             labelPosition:'top',
             tabPosition: 'left',
             isCreate: false,
             isCreateAPI: false,
+            isEdit: false,
+            isProgressCreateAPI: false,
+            isSettingCreate: false,
+            isSettingEdit: false,
             loadingForm: false,
             loadingTable: false,
             activeInstructCreateAPI: ['1','2','3'],
             activeDetailsProduct: 'body',
             activeHistory: 'all',
             progress: 0,
-            isProgressCreateAPI: false,
-            isSettingCreate: false,
             bg: '#FFF',
             reverseHistory: true,
             radioHistory: 'Tổng lịch sử'
@@ -292,7 +322,6 @@ var Main = {
             const reader = new FileReader();
 
             reader.addEventListener("load", function () {
-                // convert image file to base64 string
                 preview.src = reader.result;
             }, false);
 
@@ -314,6 +343,7 @@ var Main = {
             this.productForm = JSON.parse(JSON.stringify(row));
             that.dialogFormEditVisible = true;
             that.title = "Sửa sản phẩm - " + row.name;
+            that.isEdit = true;
         },
         clickDetailsProduct(row){
             let that = this;
@@ -329,10 +359,10 @@ var Main = {
             that.view = row.view;
             that.describe = row.describe;
             that.content = row.content;
-            that.datecreate = row.datecreate;
-            that.datemodified = row.datemodified;
-            that.usercreate = row.usercreate; 
-            that.usermodified = row.usermodified;
+            that.dateCreate = row.dateCreate;
+            that.dateModified = row.dateModified;
+            that.userCreate = row.userCreate; 
+            that.userModified = row.userModified;
             that.active = row.active;
             that.bin = row.bin;
             that.follow = row.follow;
@@ -383,6 +413,45 @@ var Main = {
             that.colorCreateSetting = '#909399';
             that.textCreateSetting = '#FFF';
         },
+        clickEditSettingProduct(){
+            let that = this;
+            this.clearForm();
+            that.isSettingEdit = true;
+            that.title = "Cài đặt"
+            
+            this.setTimeout1sLoading();
+
+            that.colorEditSetting = '#909399';
+            that.textEditSetting = '#FFF';
+        },
+        clickBinProduct(row){
+            let that = this;
+            that.$confirm('Bạn có chắc muốn xóa sản phẩm - '+ row.name +' vào thùng rác?', 'Cảnh báo', {
+                confirmButtonText: 'Xác nhận',
+                cancelButtonText: 'Hủy',
+                type: 'warning'
+                }).then(() => {
+                   that.$notify({
+                        title: 'Thành công',
+                        message: 'Xóa ['+ row.name +'] vào thùng rác thành công!',
+                        type: 'success'
+                    });
+                }).catch(() => {
+                this.$notify.error({
+                    title: 'Thất bại',
+                    message: 'Xóa ['+ row.name +'] thất bại!'
+                });        
+            });
+        },
+        clickFollowProduct(row){
+            console.log(row._id);
+        },
+        clickNoteProduct(row){
+            let that = this;
+            this.clearForm();
+            that.dialogFormNoteVisible = true;
+            that.title = "Chú ý sản phẩm - " + row.name;
+        },
         createProduct(productForm){
             let that = this;
             that.$refs[productForm].validate((valid) => {
@@ -390,6 +459,25 @@ var Main = {
                   console.log(this.productForm);
                 } else {
                   console.log('error submit!!');
+                  return false;
+                }
+            });
+        },
+        createNoteProduct(noteForm){
+            let that = this;
+            that.$refs[noteForm].validate((valid) => {
+                if (valid) {
+                  console.log(this.noteForm);
+                  that.$notify({
+                        title: 'Thành công',
+                        message: 'Thêm chú ý ['+ that.noteForm.title +'] thành công!',
+                        type: 'success'
+                    });
+                } else {
+                     this.$notify.error({
+                        title: 'Thất bại',
+                        message: 'Xóa ['+ row.name +'] thất bại!'
+                    });     
                   return false;
                 }
             });
@@ -403,16 +491,13 @@ var Main = {
 
                     axios.get(this.productAPIForm.link)
                         .then(function (response) {
-                        // handle success
                             console.log(response.data);
                             that.listData.indexProductAPI = response.data;
                         })
                         .catch(function (error) {
-                        // handle error
                         console.log(error);
                         })
                         .then(function () {
-                        // always executed
                     });
                 } else {
                 console.log('error submit!!');
@@ -473,17 +558,30 @@ var Main = {
                 that.bg = "#fff";
             }
         },
+        changeEditBG(settingEditForm){
+            let that = this;
+            if(that.settingEditForm.bgcolor){
+                that.bg = "red";
+            }
+            else{
+                that.bg = "#fff";
+            }
+        },
         clearForm(){
             let that = this;
             that.isCreate = false;
             that.isCreateAPI = false;
             that.isSettingCreate = false;
+            that.isEdit = false;
+            that.isSettingEdit = false;
             that.colorCreate = '';
             that.colorCreateAPI = '';
             that.colorCreateSetting = '';
+            that.colorEditSetting = '';
             that.textCreateAPI = '';
             that.textCreate = '';
             that.textCreateSetting = '';
+            that.textEditSetting = '';
         },
         setTimeout1sLoading(){
             let that = this;

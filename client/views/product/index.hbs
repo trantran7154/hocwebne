@@ -11,12 +11,12 @@
                 <div class="card-block">
                     <div class="row">
                         <div class="col-sm-12 table-responsive">
-                            {{> product/header}}
+                            {{> product/common/header}}
                             <el-tabs v-model="activeMain" @tab-click="handleClick">
                                 <el-tab-pane :label="item.label" 
                                              :name="item.name"
                                              v-for="item in listData.tabsMain">
-                                    {{> product/filter}}
+                                    {{> product/common/filter}}
                                     <el-table class="cn-table"
                                               ref="multipleTable"
                                               :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
@@ -64,11 +64,41 @@
                                         </el-table-column>
                                         <el-table-column label="Tình trạng">
                                             <template slot-scope="scope">
-                                                <span @click="clickDetailsProduct(scope.row)"><i class="fa fa-eye cp-icon" aria-hidden="true"></i> |</span> 
-                                                <span @click="clickEditProduct(scope.row)"><i class="fas fa-edit cp-icon"></i> |</span>
-                                                <i class="fa fa-bell cp-icon" aria-hidden="true"></i> |
-                                                <i class="fa fa-comment cp-icon" aria-hidden="true"></i> |
-                                                <i class="fa fa-trash cp-icon" aria-hidden="true"></i>
+                                                <el-tooltip class="item" effect="dark" :content="'Xem chi tiết ['+scope.row.name+']'" placement="top-end">
+                                                    <span @click="clickDetailsProduct(scope.row)">
+                                                        <i class="fa fa-eye cp-icon" aria-hidden="true"></i> |
+                                                    </span>
+                                                </el-tooltip>
+                                                <el-tooltip class="item" effect="dark" :content="'Sửa sản phẩm ['+scope.row.name+']'" placement="top-end">
+                                                    <span @click="clickEditProduct(scope.row)">
+                                                        <i class="fas fa-edit cp-icon"></i> |
+                                                    </span>
+                                                </el-tooltip>
+                                                <el-tooltip class="item" effect="dark" :content="'Hủy theo dõi sản phẩm ['+scope.row.name+']'" placement="top-end">
+                                                    <span v-if="scope.row.follow == true" @click="clickFollowProduct(scope.row)"><i class="fa fa-bell cp-icon text-danger"
+                                                            aria-hidden="true"></i> |
+                                                    </span>
+                                                </el-tooltip>
+                                                <el-tooltip class="item" effect="dark" :content="'Theo dõi sản phẩm ['+scope.row.name+']'" placement="top-end">
+                                                    <span v-if="scope.row.follow == false" @click="clickFollowProduct(scope.row)">
+                                                        <i class="fa fa-bell cp-icon" aria-hidden="true"></i> |
+                                                    </span>
+                                                </el-tooltip>
+                                                <el-tooltip class="item" effect="dark" :content="'Ghi chú sản phẩm ['+scope.row.name+']'" placement="top-end">
+                                                    <span @click="clickNoteProduct(scope.row)">
+                                                        <i class="fa fa-comment cp-icon" aria-hidden="true"></i> |
+                                                    </span>
+                                                </el-tooltip>
+                                                <el-tooltip class="item" effect="dark" :content="'Xóa sản phẩm ['+scope.row.name+']'" placement="top-end">
+                                                    <span v-if="scope.row.follow == false" @click="clickBinProduct(scope.row)">
+                                                        <i class="fa fa-trash cp-icon" aria-hidden="true"></i>
+                                                    </span>
+                                                </el-tooltip>
+                                                <el-tooltip class="item" effect="dark" :content="'Khôi phục sản phẩm ['+scope.row.name+']'" placement="top-end">
+                                                    <span v-if="scope.row.follow == true" @click="clickBinProduct(scope.row)">
+                                                        <i class="fas fa-trash-restore"></i>
+                                                    </span>
+                                                </el-tooltip>
                                             </template>
                                         </el-table-column>
                                     </el-table>
@@ -83,6 +113,7 @@
     {{> product/dialog-create}}
     {{> product/dialog-edit}}
     {{> product/dialog-details}}
+    {{> product/dialog-note}}
 </div>
 
 <script src="/js/product/app.js"></script>

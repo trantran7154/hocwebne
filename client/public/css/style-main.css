@@ -94,3 +94,15 @@ html{
     margin-top: 2%;
 }
 
+.el-message-box{
+    margin-top: -15%;
+}
+
+.cn-note .el-dialog {
+    width: 70%;
+}
+
+.cn-note .el-button {
+    margin: 9px;
+}
+

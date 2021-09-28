@@ -23,16 +23,16 @@
                     <hr>
                     <div class="row">
                         <div class="col-lg-6">
-                            Ngày tạo: <label class="badge badge-inverse-default" v-text="datecreate"></label>
+                            Ngày tạo: <label class="badge badge-inverse-default" v-text="dateCreate"></label>
                         </div>
                         <div class="col-lg-6">
-                            Ngày sửa: <label class="badge badge-inverse-default" v-text="datemodified"></label>
+                            Ngày sửa: <label class="badge badge-inverse-default" v-text="dateModified"></label>
                         </div>
                         <div class="col-lg-6">
-                            Người tạo: <label class="badge badge-inverse-default" v-text="usercreate"></label>
+                            Người tạo: <label class="badge badge-inverse-default" v-text="userCreate"></label>
                         </div>
                         <div class="col-lg-6">
-                            Người sửa: <label class="badge badge-inverse-default" v-text="usermodified"></label>
+                            Người sửa: <label class="badge badge-inverse-default" v-text="userModified"></label>
                         </div>
                         <div class="col-lg-6">
                             Hoạt động: <label :class="'badge badge-inverse-' + activeColor" v-text="activeText"></label>
@@ -79,11 +79,11 @@
                                          type="index"
                                          width="50">
                         </el-table-column>
-                        <el-table-column prop="usercreate"
+                        <el-table-column prop="userCreate"
                                          label="Người thực hiện">
                         </el-table-column>
-                        <el-table-column prop="usercreate"
-                                         label="Người thực hiện">
+                        <el-table-column prop="dateCreate"
+                                         label="Ngày tạo">
                         </el-table-column>
                         <el-table-column prop="content"
                                          label="Công việc">
