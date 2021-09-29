@@ -9,9 +9,9 @@
         </el-button>
     </div>
     <div v-if="isEdit == true" v-loading="loadingForm">
-        {{> product/form-edit}}
+        {{> product/form/edit}}
     </div>
     <div v-if="isSettingEdit == true" v-loading="loadingForm">
-        {{> product/form-edit-setting}}
+        {{> product/form/edit-setting}}
     </div>
 </el-dialog>

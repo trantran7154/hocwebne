@@ -4,7 +4,12 @@
             <el-form-item label="Ảnh minh họa">
                 <el-input v-on:change="uploadImages" type="file" v-model="productForm.image"></el-input>
             </el-form-item>
-            <center><img id="myImage" src="/images/no-image-1.jpg" alt="" class="upload-image cp"></center>
+            <center>
+                <img id="myImage" src="/images/no-image-1.jpg" alt="" class="upload-image cp">
+                <el-button type="danger" size="mini" v-if="isUploadImage == true" @click="remoteUploadImage">
+                    <i class="fa fa-times-circle" aria-hidden="true"></i> Xóa hình ảnh
+                </el-button>
+            </center>
             <el-form-item label="Slider ảnh">
                 <el-upload class="upload-demo"
                             action="https://jsonplaceholder.typicode.com/posts/"
@@ -40,13 +45,25 @@
                     </el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="Giá sản phẩm" prop="price">
-                <el-input v-model="productForm.price" 
-                            placeholder="Vui lòng nhập giá sản phẩm"
-                            maxlength="200"
-                            show-word-limit></el-input>
-                </el-input>
-            </el-form-item>
+           <div class="row">
+               <div class="col-lg-6">
+                    <el-form-item label="Giá sản phẩm" prop="price">
+                        <el-input v-model="productForm.price" placeholder="Vui lòng nhập giá sản phẩm" maxlength="200" show-word-limit>
+                        </el-input>
+                        </el-input>
+                    </el-form-item>
+               </div>
+               <div class="col-lg-6">
+                    <el-form-item label="Phần trăm giảm giá" prop="percentdiscount">
+                        <el-input v-model="productForm.percentdiscount" placeholder="Vui lòng nhập phần trăm giảm giá" maxlength="3" show-word-limit>
+                        </el-input>
+                        </el-input>
+                    </el-form-item>
+               </div>
+               <div class="col-lg-12 mt-2">
+                    <el-tag type="info">Tổng tiền (Bao gồm phần trăm giảm giá): <span class="text-danger" v-text="sumMoney('productForm')"></span></el-tag>
+               </div>
+           </div>
             <el-form-item label="Mô tả" prop="describe">
                 <el-input type="textarea" 
                             v-model="productForm.describe" 
@@ -65,8 +82,12 @@
                 <el-switch v-model="productForm.active"></el-switch>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="createProduct('productForm')">Thêm sản phẩm</el-button>
-                <el-button>Reset</el-button>
+                <el-button type="primary" @click="createProduct('productForm')">
+                    <i class="fas fa-save"></i> Thêm sản phẩm
+                </el-button>
+                <el-button @click="resetProductForm('productForm')">
+                    <i class="fas fa-sync"></i> Làm mới
+                </el-button>
             </el-form-item>
         </div>
     </div>

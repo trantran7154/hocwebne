@@ -2,44 +2,7 @@ Vue.component('w-ckeditor-vue', window['w-ckeditor-vue'])
 var Main = {
     data() {
         return {
-            tableData: [
-                {
-                    code: 'BP-1',
-                    name: 'Bàn phím đẹp và chất lượng',
-                    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZiaXVSwY4TApXOC6LgwaIDdKJQ4MC0xr3GA&usqp=CAU',
-                    category: ['Dụng cụ máy tính'],
-                    price: '400.000 VNĐ',
-                    view: '20',
-                    describe: 'Bàn phím có kích thước mỏng, kiểu dáng bắt mắt không chỉ giúp tiết kiệm được diện tích mà còn tạo tính thẩm mỹ cho không gian làm việc. Ngoài ra, bạn còn có thể điều chỉnh chiều cao bằng cách gấp lại hoặc mở rộng đôi chân vững chắc để tăng độ nghiên của bàn phím thêm 8 độ.',
-                    content: 'Bàn tay của bạn sẽ tận hưởng những phím bấm thấp, yên tĩnh và bố trí phím tiêu chuẩn với đầy đủ kích thước F-phím và phím số. Với bàn phím Logitech K120 USB, bạn chỉ cần cắm nó vào cổng USB trên máy tính để bàn, máy tính xách tay hoặc máy tính netbook và bắt đầu sử dụng nó ngay lập tức.',
-                    dateCreate: '2016-05-01',
-                    dateModified: '2016-05-01',
-                    userCreate: 'trân',
-                    userModified: 'trân',
-                    active: true,
-                    bin: false,
-                    follow: false,
-                    note: false,
-                },
-                {
-                    code: 'BP-2',
-                    name: 'Bàn phím đẹp và chất lượng',
-                    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZiaXVSwY4TApXOC6LgwaIDdKJQ4MC0xr3GA&usqp=CAU',
-                    category: ['Dụng cụ máy tính'],
-                    price: '400.000 VNĐ',
-                    view: '20',
-                    describe: 'Bàn phím có kích thước mỏng, kiểu dáng bắt mắt không chỉ giúp tiết kiệm được diện tích mà còn tạo tính thẩm mỹ cho không gian làm việc. Ngoài ra, bạn còn có thể điều chỉnh chiều cao bằng cách gấp lại hoặc mở rộng đôi chân vững chắc để tăng độ nghiên của bàn phím thêm 8 độ.',
-                    content: 'Bàn tay của bạn sẽ tận hưởng những phím bấm thấp, yên tĩnh và bố trí phím tiêu chuẩn với đầy đủ kích thước F-phím và phím số. Với bàn phím Logitech K120 USB, bạn chỉ cần cắm nó vào cổng USB trên máy tính để bàn, máy tính xách tay hoặc máy tính netbook và bắt đầu sử dụng nó ngay lập tức.',
-                    dateCreate: '2016-05-01',
-                    dateModified: '2016-05-01',
-                    userCreate: 'trân',
-                    userModified: 'trân',
-                    active: false,
-                    bin: true,
-                    follow: true,
-                    note: false,
-                }
-            ],
+            tableData: [],
             listData:{
                 tabsMain: [
                     {
@@ -204,6 +167,7 @@ var Main = {
                 image:'',
                 category: [],
                 price:'',
+                percentdiscount: 0,
                 view:'',
                 describe:'',
                 content:'',
@@ -283,6 +247,20 @@ var Main = {
                         message: 'Vượt quá số lần cho phép', 
                         trigger: 'change' 
                     }
+                ],
+                percentdiscount: [
+                    {
+                        pattern: /^[0-9]$|^[1-9][0-9]$|^(100)$/,
+                        message: 'Phần trăm chỉ từ 0 đến 100', 
+                        trigger: 'change' 
+                    }
+                ],
+                price: [
+                    {
+                        pattern: /[0-9]/,
+                        message: 'Giá sản phẩm là số chứ không phải là chữ', 
+                        trigger: 'change' 
+                    }
                 ]
             },
             multipleSelection: [],
@@ -301,6 +279,7 @@ var Main = {
             isProgressCreateAPI: false,
             isSettingCreate: false,
             isSettingEdit: false,
+            isUploadImage: false,
             loadingForm: false,
             loadingTable: false,
             activeInstructCreateAPI: ['1','2','3'],
@@ -313,10 +292,12 @@ var Main = {
         }
     },
     mounted() {
-
+        this.loadProduct();
     },
     methods: {
         uploadImages(){
+            let that = this;
+            that.isUploadImage = true;
             const preview = document.getElementById('myImage');
             const file = document.querySelector('input[type=file]').files[0];
             const reader = new FileReader();
@@ -328,6 +309,15 @@ var Main = {
             if (file) {
                 reader.readAsDataURL(file);
             }
+        },
+        remoteUploadImage(){
+            let that = this;
+
+            const preview = document.getElementById("myImage");
+            preview.src = '/images/no-image-1.jpg';
+
+            that.productForm.image = null;
+            that.isUploadImage = false;
         },
         clickCreateProduct(){
             let that = this;
@@ -452,11 +442,43 @@ var Main = {
             that.dialogFormNoteVisible = true;
             that.title = "Chú ý sản phẩm - " + row.name;
         },
+        loadProduct(){
+            let that = this;
+            const link = '/product/index';
+            axios.get(link)
+                .then(function (response) {
+                    console.log(response.data);
+                    that.tableData = response.data;
+                })
+                .catch(function (error) {
+                console.log(error);
+                })
+                .then(function () {
+                });
+        },
         createProduct(productForm){
             let that = this;
             that.$refs[productForm].validate((valid) => {
                 if (valid) {
-                  console.log(this.productForm);
+                    const link = '/product/create';
+                    axios.get(link,{
+                                params: JSON.parse(JSON.stringify(that.productForm))
+                            })
+                            .then(function (response) {
+                                that.loadProduct();
+
+                                that.$notify({
+                                    title: 'Thành công',
+                                    message: 'Thêm sản phẩm ['+ that.productForm.name +'] thành công!',
+                                    type: 'success'
+                                });
+                            })
+                            .catch(function (error) {
+                            console.log(error);
+                            })
+                            .then(function () {
+                            });
+                            this.dialogFormCreateVisible = false;
                 } else {
                   console.log('error submit!!');
                   return false;
@@ -589,6 +611,16 @@ var Main = {
             setTimeout(function(){ 
                 that.loadingForm = false;
             }, 3000);
+        },
+        sumMoney(productForm){
+            let that = this;
+            const price = (that.productForm.price * (100 - that.productForm.percentdiscount))/100;
+            const sumPrice = price.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
+            return sumPrice;
+        },
+        resetProductForm(productForm){
+            let that = this;
+            that.$refs[productForm].resetFields();
         }
     }
 };

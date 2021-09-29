@@ -29,12 +29,12 @@
         </el-button>
     </div>
     <div v-if="isCreate == true" v-loading="loadingForm">
-        {{> product/form-create}}
+        {{> product/form/create}}
     </div>
     <div v-if="isCreateAPI == true" v-loading="loadingForm">
-        {{> product/form-createAPI}}
+        {{> product/form/createAPI}}
     </div>
     <div v-if="isSettingCreate == true" v-loading="loadingForm">
-        {{> product/form-create-setting}}
+        {{> product/form/create-setting}}
     </div>
 </el-dialog>
