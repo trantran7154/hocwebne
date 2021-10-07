@@ -1,12 +1,12 @@
-<el-form :label-position="labelPosition" :model="productForm" :rules="productValidation" ref="productForm" label-width="120px" class="demo-ruleForm">
+<el-form enctype="multipart/form-data" :label-position="labelPosition" :model="productForm" :rules="productValidation" ref="productForm" label-width="120px" class="demo-ruleForm">
     <div class="row">
         <div class="col-lg-3">
             <el-form-item label="Ảnh minh họa">
-                <el-input v-on:change="uploadImages" type="file" v-model="productForm.image"></el-input>
+                <el-input v-on:change="uploadImages('productForm')" type="file" v-model="productForm.image"></el-input>
             </el-form-item>
             <center>
-                <img id="myImage" src="/images/no-image-1.jpg" alt="" class="upload-image cp">
-                <el-button type="danger" size="mini" v-if="isUploadImage == true" @click="remoteUploadImage">
+                <img :src="imageUpload" alt="" class="upload-image cp">
+                <el-button type="danger" size="mini" v-if="isUploadImage == true" @click="remoteUploadImage('productForm')">
                     <i class="fa fa-times-circle" aria-hidden="true"></i> Xóa hình ảnh
                 </el-button>
             </center>
@@ -37,13 +37,24 @@
                             show-word-limit></el-input>
             </el-form-item>
             <el-form-item label="Danh mục">
-                    <el-select v-model="productForm.category" multiple placeholder="Vui lòng chọn danh mục" class="w-100">
+                <el-select v-model="productForm.category" multiple placeholder="Vui lòng chọn danh mục" class="w-100">
                     <el-option v-for="item in listData.optionsCategory"
                                 :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
+                                :label="item.name"
+                                :value="item._id">
                     </el-option>
                 </el-select>
+                <div class="float-right" v-if="!isCreateCategory" @click="openCreateCategory()">
+                    <span v-html="arrowCreateCategory"></span>
+                    Thêm danh mục
+                </div>
+                <div class="float-right" v-if="isCreateCategory" @click="closeCreateCategory()">
+                    <span v-html="arrowCreateCategory"></span>
+                    Đóng danh mục
+                </div>
+                <div v-if="isCreateCategory">
+                    {{> product/form/create-category}}
+                </div>
             </el-form-item>
            <div class="row">
                <div class="col-lg-6">

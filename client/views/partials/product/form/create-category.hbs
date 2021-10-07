@@ -1,0 +1,16 @@
+<div class="clear-fix"></div>
+<div class="row mt-1">
+    <div class="col-lg-6"></div>
+    <div class="col-lg-6">
+        <el-card shadow="hover" v-loading="loadingCreateCategory">
+            <el-form :model="categoryForm" :rules="categoryValidate" ref="categoryForm" class="demo-ruleForm">
+                <el-form-item prop="name">
+                    <b class="text-danger">Tên danh mục</b>
+                    <el-input v-model="categoryForm.name" size="small" placeholder="Vui lòng nhập tên danh mục"></el-input>
+                </el-form-item>
+                <el-button type="danger" class="float-right" size="small" @click="createCategory('categoryForm')">Thêm danh mục
+                </el-button>
+            </el-form>
+        </el-card>
+    </div>
+</div>

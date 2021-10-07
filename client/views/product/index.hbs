@@ -12,16 +12,18 @@
                     <div class="row">
                         <div class="col-sm-12 table-responsive">
                             {{> product/common/header}}
-                            <el-tabs v-model="activeMain" @tab-click="handleClick">
+                            <el-tabs v-model="activeMain" @tab-click="handleClickMain">
                                 <el-tab-pane :label="item.label" 
                                              :name="item.name"
                                              v-for="item in listData.tabsMain">
                                     {{> product/common/filter}}
-                                    <el-table class="cn-table"
+                                    <el-table class="cn-table mt-1"
                                               ref="multipleTable"
                                               :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
                                               style="width: 100%"
-                                              @selection-change="handleSelectionChange">
+                                              @selection-change=""
+                                              :default-sort = "{prop: 'dateCreate', order: 'descending'}"
+                                              :default-sort = "{prop: 'dateModified', order: 'descending'}">
                                         <el-table-column type="selection" 
                                                          width="55">
                                         </el-table-column>
@@ -33,36 +35,64 @@
                                                          label="Mã"
                                                          width="70">
                                         </el-table-column>
-                                        <el-table-column label="Hình ảnh">
+                                        <el-table-column label="Hình ảnh" width="120">
                                             <template slot-scope="scope">
-                                                <img :src="scope.row.image" alt="" class="image">
+                                                <img :src="'images/products/' + scope.row.image" alt="" class="image">
                                             </template>
                                         </el-table-column>
                                         <el-table-column property="name"
                                                          label="Tên sản phẩm"
                                                          width="130">
                                         </el-table-column>
-                                        <el-table-column property="category"
-                                                         label="Danh mục">
-                                        </el-table-column>
                                         <el-table-column property="price"
-                                                         label="Giá">
+                                                         label="Giá sản phẩm" width="150">
+                                                        <template slot-scope="scope">
+                                                            <i><span v-text="priceProduct(scope.row.price)"></span></i>
+                                                        </template>
                                         </el-table-column>
-                                        <el-table-column property="datecreate"
-                                                         label="Ngày tạo">
+                                        <el-table-column property="price" label="Giá bán" width="150">
+                                            <template slot-scope="scope">
+                                                <i><span v-text="priceTotal(scope.row.price,scope.row.percentdiscount)"></span></i>
+                                            </template>
                                         </el-table-column>
-                                        <el-table-column property="datemodified"
-                                                         label="Ngày sửa">
+                                        <el-table-column property="dateCreate"
+                                                         label="Ngày tạo" 
+                                                         width="150"
+                                                         sortable>
+                                            <template slot-scope="scope">
+                                                <span v-text="dateCreateFormat(scope.row.dateCreate)"></span>
+                                            </template>
                                         </el-table-column>
-                                        <el-table-column label="Tình trạng">
+                                        <el-table-column property="dateModified"
+                                                         label="Ngày sửa" 
+                                                         width="150"
+                                                         sortable>
+                                            <template slot-scope="scope">
+                                                <span v-text="dateModifiedFormat(scope.row.dateModified)"></span>
+                                            </template>
+                                        </el-table-column>
+                                        <el-table-column label="Tình trạng" width="100">
                                             <template slot-scope="scope">
                                                 <el-switch v-model="scope.row.active"></el-switch>
                                             </template>
                                         </el-table-column>
                                         <el-table-column property="view"
-                                                         label="Lượt xem">
+                                                         label="Lượt xem"
+                                                         width="100">
                                         </el-table-column>
-                                        <el-table-column label="Tình trạng">
+                                        <el-table-column property="category" 
+                                                         label="Danh mục" 
+                                                         width="200">
+                                            <template slot-scope="scope">
+                                                <el-tag type="info" closable>Tag 3</el-tag>
+                                                <el-tag type="info" closable>Tag 3</el-tag>
+                                                <el-tag type="info" closable>Tag 3</el-tag>
+                                                <el-tag>
+                                                    <i class="fa fa-plus-circle cp-icon" aria-hidden="true"></i>
+                                                </el-tag>
+                                            </template>
+                                        </el-table-column>
+                                        <el-table-column label="Hành động" width="100" fixed="right">
                                             <template slot-scope="scope">
                                                 <el-tooltip class="item" effect="dark" :content="'Xem chi tiết ['+scope.row.name+']'" placement="top-end">
                                                     <span @click="clickDetailsProduct(scope.row)">

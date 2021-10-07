@@ -173,6 +173,9 @@ var Main = {
                 content:'',
                 active: true
             },
+            categoryForm: {
+                name: ''
+            },
             productAPIForm: {
                 link: '',
                 user: '',
@@ -210,6 +213,20 @@ var Main = {
             },
             createPasswordValidate:{
 
+            },
+            categoryValidate:{
+                name: [
+                    {  
+                        required: true, 
+                        message: 'Vui lòng nhập tên danh mục', 
+                        trigger: 'change' 
+                    },
+                    {
+                        max: 200,
+                        message: 'Vượt quá số lần cho phép', 
+                        trigger: 'change' 
+                    }
+                ]
             },
             noteValidate:{
 
@@ -275,6 +292,7 @@ var Main = {
             tabPosition: 'left',
             isCreate: false,
             isCreateAPI: false,
+            isCreateCategory: false,
             isEdit: false,
             isProgressCreateAPI: false,
             isSettingCreate: false,
@@ -282,39 +300,89 @@ var Main = {
             isUploadImage: false,
             loadingForm: false,
             loadingTable: false,
+            loadingCreateCategory: true,
             activeInstructCreateAPI: ['1','2','3'],
             activeDetailsProduct: 'body',
             activeHistory: 'all',
+            activeColor: '',
+            activeText: '',
             progress: 0,
             bg: '#FFF',
             reverseHistory: true,
-            radioHistory: 'Tổng lịch sử'
+            radioHistory: 'Tổng lịch sử',
+            title: '',
+            titleHis: '',
+            textCreateSetting: '',
+            textCreateAPI: '',
+            textCreate: '',
+            textEditSetting: '',
+            colorCreateSetting: '',
+            colorCreateAPI: '',
+            colorCreate: '',
+            colorEditSetting: '',
+            code: '',
+            name: '',
+            image: '',
+            imageUpload: 'images/no-image-1.jpg',
+            category: '',
+            price: '',
+            view: '',
+            describe: '',
+            content: '',
+            dateCreate: '',
+            dateModified: '',
+            userCreate: '',
+            userModified: '',
+            active: '',
+            bin: '',
+            follow: '',
+            note: '',
+            followColor: '',
+            followText: '',
+            noteColor: '',
+            noteText: '',
+            binColor: '',
+            binText: '',
+            arrowCreateCategory: '<i class="fa fa-arrow-circle-right" aria-hidden="true"></i>'
         }
     },
     mounted() {
         this.loadProduct();
     },
     methods: {
-        uploadImages(){
+        priceProduct(price){
+            return this.formatPrice(price);
+        },
+        priceTotal(price, percentdiscount){
+            const format = (price * (100 - percentdiscount))/100;
+            return this.formatPrice(format);
+        },
+        dateCreateFormat(date){
+            return this.formatDate(date);
+        },
+        dateModifiedFormat(date){
+            return this.formatDate(date);
+        },
+        uploadImages(productForm){
             let that = this;
             that.isUploadImage = true;
-            const preview = document.getElementById('myImage');
             const file = document.querySelector('input[type=file]').files[0];
             const reader = new FileReader();
 
             reader.addEventListener("load", function () {
-                preview.src = reader.result;
+                that.imageUpload = reader.result;
             }, false);
 
             if (file) {
                 reader.readAsDataURL(file);
             }
+
+            that.productForm.image = file;
         },
-        remoteUploadImage(){
+        remoteUploadImage(productForm){
             let that = this;
 
-            const preview = document.getElementById("myImage");
-            preview.src = '/images/no-image-1.jpg';
+            that.imageUpload = '/images/no-image-1.jpg';
 
             that.productForm.image = null;
             that.isUploadImage = false;
@@ -442,6 +510,20 @@ var Main = {
             that.dialogFormNoteVisible = true;
             that.title = "Chú ý sản phẩm - " + row.name;
         },
+        openCreateCategory(){
+            let that = this;
+            that.loadingCreateCategory = true;
+            that.isCreateCategory = true;
+            that.arrowCreateCategory = '<i class="fa fa-arrow-circle-down" aria-hidden="true"></i>'
+            setTimeout(function(){ 
+                that.loadingCreateCategory = false;
+            }, 1000);
+        },
+        closeCreateCategory(){
+            let that = this;
+            that.isCreateCategory = false;
+            that.arrowCreateCategory = '<i class="fa fa-arrow-circle-right" aria-hidden="true"></i>'
+        },
         loadProduct(){
             let that = this;
             const link = '/product/index';
@@ -460,8 +542,11 @@ var Main = {
             let that = this;
             that.$refs[productForm].validate((valid) => {
                 if (valid) {
+                    const formData = new FormData();
+                    formData.append('file', that.productForm.image);
+                    console.log(that.productForm.image);
                     const link = '/product/create';
-                    axios.get(link,{
+                    axios.post(link, formData, {
                                 params: JSON.parse(JSON.stringify(that.productForm))
                             })
                             .then(function (response) {
@@ -481,6 +566,25 @@ var Main = {
                             this.dialogFormCreateVisible = false;
                 } else {
                   console.log('error submit!!');
+                  return false;
+                }
+            });
+        },
+        createCategory(categoryForm){
+            let that = this;
+            that.$refs[categoryForm].validate((valid) => {
+                if (valid) {
+                  console.log(this.categoryForm);
+                  that.$notify({
+                        title: 'Thành công',
+                        message: 'Thêm danh mục ['+ that.categoryForm.name +'] thành công!',
+                        type: 'success'
+                    });
+                } else {
+                     this.$notify.error({
+                        title: 'Thất bại',
+                        message: 'Xóa ['+ row.name +'] thất bại!'
+                    });     
                   return false;
                 }
             });
@@ -537,6 +641,9 @@ var Main = {
                   return false;
                 }
             });
+        },
+        handleClickMain(){
+            
         },
         handleClickDetails(){   
             let that = this;
@@ -621,6 +728,14 @@ var Main = {
         resetProductForm(productForm){
             let that = this;
             that.$refs[productForm].resetFields();
+        },
+        formatPrice(price){
+            const format = price.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
+            return format;
+        },
+        formatDate(date){
+            const format = new Date(date);
+            return format.toLocaleString();
         }
     }
 };

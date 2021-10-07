@@ -28,6 +28,9 @@ const Porduct = new Schema({
         content: {
             type: String
         },
+        percentdiscount:{
+            type: Number
+        },
         dateCreate: {
             type: Date,
             default: Date.now
